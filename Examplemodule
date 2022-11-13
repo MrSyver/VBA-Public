@@ -1,0 +1,104 @@
+Option Explicit
+
+'//____________________________________________________________________________________________________________________________
+'//----------------------------------------------------------------------------------------------------------------------------
+'// ### MODULEDESCRIPTION ###
+'//----------------------------------------------------------------------------------------------------------------------------
+'// Description                 : This module contains functions to edit arrays
+'// created on                  : 09.11.22
+'// created by                  : Moritz Martin
+'// Changed on/by               : 09.11.22/M.M.
+'//____________________________________________________________________________________________________________________________
+'//----------------------------------------------------------------------------------------------------------------------------
+
+'//GENERAL VARIABLES AND CONSTANTS
+    'ErrMessage that appears before the procedure-specific message
+    Private Const cStrErrorTitle As String = "Hier steht der Titel der Fehlermeldung die erscheint wenn in diesem Modul ein Fehler auftritt."
+    Private Const cStrErrorMesage As String = "Hier steht die Fehlermeldung die erscheint wenn in diesem Modul ein Fehler auftritt."
+    
+    'Activates/Deactivates developer mode. If true the user can use the vba debugger when an error-message appears.
+    Private Const cBoolDevMode As Boolean = False
+'.
+'//____________________________________________________________________________________________________________________________
+'//----------------------------------------------------------------------------------------------------------------------------
+
+
+Public Sub ProcedureExample()
+'//________________________________________________________________________________________
+'//----------------------------------------------------------------------------------------
+'// Description                 : This Procedure contains the general procedure-structure
+'// created on                  : 09.11.22
+'// created by                  : Moritz Martin
+'// Changed on/by               : 09.11.22/M.M.
+'//_________________________________________________________________________________________
+'//-----------------------------------------------------------------------------------------
+
+'// GENERAL DEFINITIONS
+Dim varMsgBoxAnswer As Variant
+Dim boolDevMode As Boolean
+Dim strProcedure As String
+Dim strStep As String
+Dim strErrCause As String
+Dim cStrErrorTitle As String
+
+'// GENERAL VARIABLES
+    'Sets the DevMode for the procedure to True or False. Applies only to this procedure.
+    boolDevMode = False
+    
+    'If the global Dev Mode variable is set to true the variable for the procedure is overwritten and also set to true, otherwise the previously specified variable applies
+    If gbl_cBoolDevMode Or cBoolDevMode Then
+        boolDevMode = True
+    End If
+    
+    'Procedure name and step specification for error messages
+    strProcedure = "Beispielprozedur"
+    strStep = "-"
+    strErrCause = ""
+    
+'// INIT ERROR HANDLER
+On Error GoTo ErrHandler
+
+'___________________________________________________________________________________________
+'-------------------------------------------------------------------------------------------
+'// SPECIFIC DEFINITIONS
+
+
+'___________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+'___________________________________________________________________________________________
+'-------------------------------------------------------------------------------------------
+
+'// ERROR HANDLER
+Exit Sub
+ErrHandler:
+    
+    If strErrCause <> "" Then strErrCause = "Cause: " & strErrCause & vbCr
+    If boolDevMode Then
+        'MsgBox with the error message and option to abort the procedure
+        varMsgBoxAnswer = MsgBox(cStrErrorMesage & strProcedure & " | " & strStep & vbCr & vbCr & strErrCause & "Desc.: " & Err.Description & vbCr & "Source: " & Err.Source, vbAbortRetryIgnore Or vbCritical, cStrErrorTitle)
+        
+        If varMsgBoxAnswer = vbIgnore Then
+            Resume Next
+        ElseIf varMsgBoxAnswer = vbRetry Then
+            On Error GoTo 0
+            Resume
+        End If
+        
+    Else
+        'MsgBox info about error without possibility to act
+        MsgBox cStrErrorMesage & strProcedure & " | " & strStep & vbCr & strErrCause, vbCritical Or vbOKOnly, cStrErrorTitle
+        
+    End If
+    
+End Sub
